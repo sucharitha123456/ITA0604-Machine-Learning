@@ -1,0 +1,35 @@
+# FIND-S Algorithm Implementation
+
+def find_s_algorithm(training_data, target_attribute):
+    """
+    training_data: list of tuples (attributes, label)
+    target_attribute: the label we want to learn (e.g., 'Yes')
+    """
+    # Step 1: Initialize hypothesis with the most specific values
+    hypothesis = ["0"] * len(training_data[0][0])
+
+    # Step 2: Iterate through training examples
+    for attributes, label in training_data:
+        if label == target_attribute:  # Only consider positive examples
+            for i in range(len(hypothesis)):
+                if hypothesis[i] == "0":  # First assignment
+                    hypothesis[i] = attributes[i]
+                elif hypothesis[i] != attributes[i]:
+                    hypothesis[i] = "?"  # Generalize if mismatch
+    return hypothesis
+
+
+# Example Training Data
+# Each tuple: (attributes, label)
+# Attributes: [Sky, AirTemp, Humidity, Wind, Water, Forecast]
+training_data = [
+    (["Sunny", "Warm", "Normal", "Strong", "Warm", "Same"], "Yes"),
+    (["Sunny", "Warm", "High", "Strong", "Warm", "Same"], "Yes"),
+    (["Rainy", "Cold", "High", "Strong", "Warm", "Change"], "No"),
+    (["Sunny", "Warm", "High", "Strong", "Cool", "Change"], "Yes"),
+]
+
+# Run FIND-S
+final_hypothesis = find_s_algorithm(training_data, target_attribute="Yes")
+
+print("Final Hypothesis:", final_hypothesis)
