@@ -1,0 +1,93 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Dataset
+# Features:
+# Income, Loan Amount, Credit History, Debt Ratio
+
+X = np.array([
+    [25000, 15000, 1, 0.60],
+    [30000, 18000, 1, 0.55],
+    [35000, 20000, 1, 0.50],
+    [40000, 15000, 1, 0.40],
+    [45000, 12000, 1, 0.35],
+    [50000, 10000, 1, 0.30],
+    [55000, 8000, 1, 0.25],
+    [60000, 7000, 1, 0.20],
+    [28000, 20000, 0, 0.65],
+    [32000, 22000, 0, 0.70],
+    [38000, 18000, 1, 0.45],
+    [48000, 10000, 1, 0.28]
+])
+
+# Target classes
+# 0 = Poor
+# 1 = Average
+# 2 = Good
+
+y = np.array([
+    0, 0, 0,
+    1, 1, 1,
+    2, 2,
+    0, 0,
+    1, 2
+])
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.25,
+    random_state=42,
+    stratify=y
+)
+
+# Create Random Forest classifier
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Actual Classes:")
+print(y_test)
+
+print("\nPredicted Classes:")
+print(y_pred)
+
+print("\nAccuracy:")
+print(accuracy * 100, "%")
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print("\nConfusion Matrix:")
+print(cm)
+
+# Classify a new customer
+new_customer = np.array([
+    [52000, 9000, 1, 0.25]
+])
+
+prediction = model.predict(new_customer)
+
+print("\nNew Customer Details:")
+print(new_customer)
+
+print("\nPredicted Credit Score Class:")
+
+if prediction[0] == 0:
+    print("Poor")
+elif prediction[0] == 1:
+    print("Average")
+else:
+    print("Good")

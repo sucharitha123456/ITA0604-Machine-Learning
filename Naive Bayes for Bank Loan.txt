@@ -1,0 +1,50 @@
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Features: Income (thousands), Credit Score, Loan Amount (thousands)
+X = [
+    [25, 550, 200],
+    [30, 580, 180],
+    [35, 600, 150],
+    [40, 620, 160],
+    [45, 650, 140],
+    [50, 680, 120],
+    [60, 700, 100],
+    [70, 750, 120],
+    [80, 780, 150],
+    [90, 800, 180],
+    [28, 560, 220],
+    [65, 730, 110],
+    [55, 690, 130],
+    [32, 590, 190],
+    [75, 770, 140],
+    [42, 640, 170]
+]
+
+# 0 = Rejected, 1 = Approved
+y = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+# Train model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+print("Bank Loan Prediction using Naive Bayes")
+print("Accuracy:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
+
+# Predict for a new applicant
+new_applicant = [[60, 720, 120]]
+prediction = model.predict(new_applicant)[0]
+
+if prediction == 1:
+    print("Loan Status: Approved")
+else:
+    print("Loan Status: Rejected")

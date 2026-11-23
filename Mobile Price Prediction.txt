@@ -1,0 +1,46 @@
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Features: RAM (MB), Battery Power (mAh), Internal Memory (GB)
+X = [
+    [512, 2000, 16],
+    [1024, 2500, 16],
+    [2048, 3000, 32],
+    [3072, 3500, 32],
+    [4096, 4000, 64],
+    [6144, 4500, 64],
+    [8192, 5000, 128],
+    [12288, 5000, 256],
+    [512, 1800, 8],
+    [2048, 3200, 16],
+    [4096, 4200, 128],
+    [8192, 4800, 256]
+]
+
+# Price ranges: 0 = Low, 1 = Medium, 2 = High
+y = [0, 0, 0, 1, 1, 1, 2, 2, 0, 0, 2, 2]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+# Train model
+model = DecisionTreeClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Test model
+predictions = model.predict(X_test)
+accuracy = accuracy_score(y_test, predictions)
+
+print("Mobile Price Prediction")
+print("-----------------------")
+print("Accuracy:", round(accuracy * 100, 2), "%")
+
+# Predict a new mobile
+new_mobile = [[4096, 4000, 64]]
+result = model.predict(new_mobile)[0]
+
+price_ranges = ["Low Price", "Medium Price", "High Price"]
+print("Predicted Price Range:", price_ranges[result])
