@@ -1,0 +1,105 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Dataset
+X = np.array([
+    [1],
+    [2],
+    [3],
+    [4],
+    [5],
+    [6],
+    [7],
+    [8],
+    [9],
+    [10]
+])
+
+# Non-linear output
+y = np.array([
+    3, 6, 11, 18, 27,
+    38, 51, 66, 83, 102
+])
+
+# -------------------------------
+# Linear Regression
+# -------------------------------
+
+linear_model = LinearRegression()
+
+linear_model.fit(X, y)
+
+linear_prediction = linear_model.predict(X)
+
+linear_mse = mean_squared_error(y, linear_prediction)
+linear_r2 = r2_score(y, linear_prediction)
+
+# -------------------------------
+# Polynomial Regression
+# -------------------------------
+
+# Convert input into polynomial features
+poly = PolynomialFeatures(degree=2)
+
+X_poly = poly.fit_transform(X)
+
+polynomial_model = LinearRegression()
+
+polynomial_model.fit(X_poly, y)
+
+polynomial_prediction = polynomial_model.predict(X_poly)
+
+polynomial_mse = mean_squared_error(y, polynomial_prediction)
+polynomial_r2 = r2_score(y, polynomial_prediction)
+
+# -------------------------------
+# Display Results
+# -------------------------------
+
+print("Linear Regression")
+print("------------------")
+print("MSE:", linear_mse)
+print("R2 Score:", linear_r2)
+
+print("\nPolynomial Regression")
+print("---------------------")
+print("MSE:", polynomial_mse)
+print("R2 Score:", polynomial_r2)
+
+# Predict a new value
+new_value = np.array([[11]])
+
+linear_result = linear_model.predict(new_value)
+
+new_value_poly = poly.transform(new_value)
+polynomial_result = polynomial_model.predict(new_value_poly)
+
+print("\nNew Input:")
+print("X =", new_value[0][0])
+
+print("\nLinear Regression Prediction:")
+print(linear_result[0])
+
+print("\nPolynomial Regression Prediction:")
+print(polynomial_result[0])
+
+# -------------------------------
+# Plot the results
+# -------------------------------
+
+plt.scatter(X, y, label="Actual Data")
+
+plt.plot(X, linear_prediction, label="Linear Regression")
+
+plt.plot(X, polynomial_prediction, label="Polynomial Regression")
+
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Linear vs Polynomial Regression")
+plt.legend()
+plt.show()
+

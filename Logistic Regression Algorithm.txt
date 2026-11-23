@@ -1,0 +1,73 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Dataset
+# Features: Study Hours and Attendance
+X = np.array([
+    [2, 60],
+    [3, 65],
+    [4, 70],
+    [5, 75],
+    [6, 80],
+    [7, 85],
+    [8, 90],
+    [9, 95],
+    [2, 55],
+    [3, 60],
+    [7, 88],
+    [8, 92]
+])
+
+# Target
+# 0 = Fail
+# 1 = Pass
+y = np.array([
+    0, 0, 0, 1, 1, 1,
+    1, 1, 0, 0, 1, 1
+])
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# Create Logistic Regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+# Display results
+print("Testing Data:")
+print(X_test)
+
+print("\nActual Output:")
+print(y_test)
+
+print("\nPredicted Output:")
+print(y_pred)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("\nAccuracy:")
+print(accuracy * 100, "%")
+
+# Predict a new sample
+new_sample = np.array([[6, 82]])
+
+prediction = model.predict(new_sample)
+
+print("\nNew Sample:")
+print(new_sample)
+
+print("\nPredicted Class:")
+if prediction[0] == 1:
+    print("Pass")
+else:
+    print("Fail")

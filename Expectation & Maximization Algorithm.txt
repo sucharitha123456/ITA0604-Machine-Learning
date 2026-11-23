@@ -1,0 +1,49 @@
+import numpy as np
+from sklearn.mixture import GaussianMixture
+
+# Input dataset
+X = np.array([
+    [1.0],
+    [1.5],
+    [2.0],
+    [2.5],
+    [8.0],
+    [8.5],
+    [9.0],
+    [9.5]
+])
+
+# Create Gaussian Mixture Model
+# n_components = number of clusters
+model = GaussianMixture(
+    n_components=2,
+    random_state=42
+)
+
+# Train the model using EM algorithm
+model.fit(X)
+
+# Predict cluster for each data point
+clusters = model.predict(X)
+
+# Get probability of each data point belonging to each cluster
+probabilities = model.predict_proba(X)
+
+# Display input data
+print("Input Data:")
+print(X.flatten())
+
+# Display cluster assignments
+print("\nCluster Assignments:")
+for i in range(len(X)):
+    print("Data:", X[i][0],
+          "-> Cluster:", clusters[i])
+
+# Display probabilities
+print("\nCluster Probabilities:")
+print(probabilities)
+
+# Display means of the clusters
+print("\nCluster Means:")
+print(model.means_.flatten())
+
